@@ -2,13 +2,11 @@
 #################################################
 ## GIT
 #################################################
-setwd('~/Git/newdat/')
 
-system2('git add code.r')
-system('git commit -m "finished pca + pca vis"')
-
-system('git push')
-
+# cd ~/Git/newdat/
+# git add code.r
+# git commit -m "xxx"
+# git push
 
 
 
@@ -194,17 +192,26 @@ fviz_pca_biplot(
 
 
 #################################################
-## RANDOM FOREST
+## CLASSIFICATION AND REGRESSION TREES
 #################################################
-
 
 # -----------------------------------------------
 # Resources
 # -----------------------------------------------
 
+# Tutorials:
+# http://statistical-research.com/a-brief-tour-of-the-trees-and-forests/?utm_source=rss&utm_medium=rss&utm_campaign=a-brief-tour-of-the-trees-and-forests
+# http://www.statmethods.net/advstats/cart.html
+
 # -----------------------------------------------
 # Libraries
 # -----------------------------------------------
+
+if (!require("rpart")) {
+  install.packages("rpart", dependencies = TRUE)
+  library(rpart)
+}
+
 
 # -----------------------------------------------
 # Functions
@@ -218,9 +225,51 @@ fviz_pca_biplot(
 # Import
 # -----------------------------------------------
 
+
+# Import example data set - iris
+data(iris)
+
+# Store data as dat
+dat = iris
+
+
 # -----------------------------------------------
 # Body
 # -----------------------------------------------
+
+# define formula
+frmla = Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width
+
+# fit tree
+fit = rpart(
+  frmla, 
+  method="class", 
+  data=dat
+  )
+
+# display the results
+printcp(fit)
+
+# visualize cross-validation results
+plotcp(fit)
+
+# detailed summary of splits
+summary(fit)
+
+# plot tree
+plot(
+  fit, 
+  uniform=TRUE, 
+  main="Classification Tree for Iris"
+  )
+
+text(
+  fit, 
+  use.n=TRUE, 
+  all=TRUE, 
+  cex=.8
+  )
+
 
 # -----------------------------------------------
 # Export
@@ -233,8 +282,9 @@ fviz_pca_biplot(
 
 
 #################################################
-## CLASSIFICATION AND REGRESSION TREES
+## RANDOM FOREST
 #################################################
+
 
 #################################################
 ## RAPTR

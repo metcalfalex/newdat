@@ -2,10 +2,9 @@
 #################################################
 ## GIT
 #################################################
+setwd('~/Git/newdat/')
 
-system2('cd ~/Git/newdat/')
-
-system('git add code.r')
+system2('git add code.r')
 system('git commit -m "finished pca + pca vis"')
 
 system('git push')
